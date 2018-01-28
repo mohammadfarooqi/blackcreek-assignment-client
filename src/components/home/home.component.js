@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Request from 'superagent';
 
+import DisplayAllOrders from '../displayallorders/displayallorders.component';
+
 import './home.component.css';
 
 class HomeComponent extends Component {
@@ -14,16 +16,20 @@ class HomeComponent extends Component {
   }
   
   componentWillMount() {
+    this.getData();
+  }
+  
+  getData() {
     const prefix_url = 'http://localhost:3001/api';
     const transfer_request = '/transferRequests';
     const prescription_orders = '/prescriptionOrders';
-
+  
     Request.get(prefix_url + transfer_request).then((response) => {
       this.setState({
         transferRequests: response.body
       });
     });
-
+  
     Request.get(prefix_url + prescription_orders).then((response) => {
       this.setState({
         orders: response.body
@@ -33,10 +39,11 @@ class HomeComponent extends Component {
 
   render() {
     return (
-      <div>
-      <p>Orders: { this.state.orders.length }</p>
-      <p>Transfer Requests: { this.state.transferRequests.length }</p>        
-      </div>
+      <DisplayAllOrders 
+        orders={this.state.orders} 
+        transferRequests={this.state.transferRequests} 
+        refreshData={this.getData.bind(this)}
+      ></DisplayAllOrders>
     );
   }
 }
