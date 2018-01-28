@@ -7,7 +7,8 @@ class DisplayAllOrders extends Component {
     super(props);
 
     this.state = {
-      list_result: []
+      newItems: [],
+      inProgressItems: []
     };
   }
 
@@ -17,7 +18,8 @@ class DisplayAllOrders extends Component {
     const result = this.finalizeOutput(nextProps.orders, nextProps.transferRequests);
 
     this.setState({
-      list_result: result
+      newItems: result.newItems,
+      inProgressItems: result.inProgressItems
     });
   }
 
@@ -28,27 +30,41 @@ class DisplayAllOrders extends Component {
     //   patientName: 'Mohammad',
     //   drugName: 'Drug Mohammad'
     // }
-
-    const result = [];
+    
+    const newItems = [];
+    const inProgressItems = [];
 
     // remove archeived from result sets of order and transferRequests
+    // set type of order so we can later render red/blue bg
     orders.map(item => {
       if (item.status !== 'archived') {
-        result.push(item);
-      }
+        item['type'] = 'order';
+
+        if (item.status === 'new') {
+          newItems.push(item);
+        } else if (item.status === 'inProgress') {
+          inProgressItems.push(item);
+        }
+      } 
 
       return item;
     });
 
     transferRequests.map(item => {
       if (item.status !== 'archived') {
-        result.push(item);
+        item['type'] = 'transfer';
+        if (item.status === 'new') {
+          newItems.push(item);
+        } else if (item.status === 'inProgress') {
+          inProgressItems.push(item);
+        }
       }
 
       return item;
     });
 
-    return result;
+
+    return { newItems, inProgressItems };
   }
 
   render() {
@@ -59,9 +75,25 @@ class DisplayAllOrders extends Component {
         </div>
 
         <div className="col-12 mt-2">
+          <h5 className="mt-2">New</h5>
           <ul className="list-group">
-            {this.state.list_result.map((item, index) => 
-              <li className="list-group-item" key={index}>
+            {this.state.newItems.map((item, index) => 
+              <li className={"list-group-item " + (item.type === 'order' ? 'bg-red' : 'bg-blue')} key={index}>
+                <p className="mb-0">
+                  <span>Patient: {item.patientName}</span>
+                  <br/>
+                  <span>Drug: {item.drugName}</span>
+                </p>
+              </li>
+            )}
+          </ul>
+        </div>
+
+        <div className="col-12 mt-2">
+          <h5 className="mt-2">In Progress</h5>
+          <ul className="list-group">
+            {this.state.inProgressItems.map((item, index) => 
+              <li className={"list-group-item " + (item.type === 'order' ? 'bg-red' : 'bg-blue')} key={index}>
                 <p className="mb-0">
                   <span>Patient: {item.patientName}</span>
                   <br/>
