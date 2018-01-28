@@ -30,6 +30,14 @@ class DisplayAllOrders extends Component {
     //   patientName: 'Mohammad',
     //   drugName: 'Drug Mohammad'
     // }
+
+    // new structure 
+    // {
+    //   type: 'order' or 'transfer',
+    //   status: 'new',
+    //   patientName: 'Mohammad',
+    //   drugName: 'Drug Mohammad'
+    // }
     
     const newItems = [];
     const inProgressItems = [];
@@ -76,32 +84,46 @@ class DisplayAllOrders extends Component {
 
         <div className="col-12 mt-2">
           <h5 className="mt-2">New</h5>
-          <ul className="list-group">
-            {this.state.newItems.map((item, index) => 
-              <li className={"list-group-item " + (item.type === 'order' ? 'bg-red' : 'bg-blue')} key={index}>
-                <p className="mb-0">
-                  <span>Patient: {item.patientName}</span>
-                  <br/>
-                  <span>Drug: {item.drugName}</span>
-                </p>
-              </li>
-            )}
-          </ul>
+          
+          {this.state.newItems.length === 0 ? (
+            <li className="list-group-item">
+              <p className="mb-0">No <strong>'New'</strong> Prescription Orders or Transfer Requests</p>
+            </li>
+          ) : (
+            <ul className="list-group">
+              {this.state.newItems.map((item, index) => 
+                <li className={"list-group-item " + (item.type === 'order' ? 'bg-red' : 'bg-blue')} key={index}>
+                  <p className="mb-0">
+                    <span>Patient: {item.patientName}</span>
+                    <br/>
+                    <span>Drug: {item.drugName}</span>
+                  </p>
+                </li>
+              )}
+            </ul>
+          )}
         </div>
 
         <div className="col-12 mt-2">
           <h5 className="mt-2">In Progress</h5>
-          <ul className="list-group">
-            {this.state.inProgressItems.map((item, index) => 
-              <li className={"list-group-item " + (item.type === 'order' ? 'bg-red' : 'bg-blue')} key={index}>
-                <p className="mb-0">
-                  <span>Patient: {item.patientName}</span>
-                  <br/>
-                  <span>Drug: {item.drugName}</span>
-                </p>
-              </li>
-            )}
-          </ul>
+          
+          {this.state.inProgressItems.length === 0 ? (
+            <li className="list-group-item">
+              <p className="mb-0">No <strong>'In Progress'</strong> Prescription Orders or Transfer Requests</p>
+            </li>
+          ) : (
+            <ul className="list-group">
+              {this.state.inProgressItems.map((item, index) => 
+                <li className={"list-group-item " + (item.type === 'order' ? 'bg-red' : 'bg-blue')} key={index}>
+                  <p className="mb-0">
+                    <span>Patient: {item.patientName}</span>
+                    <br/>
+                    <span>Drug: {item.drugName}</span>
+                  </p>
+                </li>
+              )}
+            </ul>
+          )}
         </div>
       </div>
     );
