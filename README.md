@@ -8,7 +8,6 @@ This project was worked on as part of the take home assignment. Also, a seperate
 
 ---------------------------------
 
-
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ## Available Scripts
